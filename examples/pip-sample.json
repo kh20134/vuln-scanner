@@ -1,0 +1,4 @@
+[
+  {"name": "django", "version": "3.2.18"},
+  {"name": "requests", "version": "2.31.0"}
+]

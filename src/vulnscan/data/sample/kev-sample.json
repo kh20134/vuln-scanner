@@ -1,0 +1,91 @@
+{
+  "title": "CISA Catalog of Known Exploited Vulnerabilities",
+  "catalogVersion": "2026.10.08",
+  "dateReleased": "2026-10-08T20:09:18.9833Z",
+  "count": 5,
+  "note": "Subset of the official CISA Known Exploited Vulnerabilities catalog limited to CVEs in the bundled NVD sample. Full feed: https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+  "vulnerabilities": [
+    {
+      "cveID": "CVE-2023-4911",
+      "vendorProject": "GNU",
+      "product": "GNU C Library",
+      "vulnerabilityName": "GNU C Library Buffer Overflow Vulnerability",
+      "dateAdded": "2023-11-21",
+      "shortDescription": "GNU C Library's dynamic loader ld.so contains a buffer overflow vulnerability when processing the GLIBC_TUNABLES environment variable, allowing a local attacker to execute code with elevated privileges.",
+      "requiredAction": "Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.",
+      "dueDate": "2023-12-12",
+      "knownRansomwareCampaignUse": "Unknown",
+      "forensicTriage": "No",
+      "notes": "This vulnerability affects a common open-source component, third-party library, or a protocol used by different products. Please check with specific vendors for information on patching status. For more information, please see: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=1056e5b4c3f2d90ed2b4a55f96add28da2f4c8fa, https://access.redhat.com/security/cve/cve-2023-4911, https://www.debian.org/security/2023/dsa-5514 ; https://nvd.nist.gov/vuln/detail/CVE-2023-4911  ",
+      "cwes": [
+        "CWE-122"
+      ]
+    },
+    {
+      "cveID": "CVE-2023-44487",
+      "vendorProject": "IETF",
+      "product": "HTTP/2",
+      "vulnerabilityName": "HTTP/2 Rapid Reset Attack Vulnerability",
+      "dateAdded": "2023-10-10",
+      "shortDescription": "HTTP/2 contains a rapid reset vulnerability that allows for a distributed denial-of-service attack (DDoS).",
+      "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+      "dueDate": "2023-10-31",
+      "knownRansomwareCampaignUse": "Unknown",
+      "forensicTriage": "No",
+      "notes": "This vulnerability affects a common open-source component, third-party library, or protocol used by different products. For more information, please see: HTTP/2 Rapid Reset Vulnerability, CVE-2023-44487 | CISA: https://www.cisa.gov/news-events/alerts/2023/10/10/http2-rapid-reset-vulnerability-cve-2023-44487; https://blog.cloudflare.com/technical-breakdown-http2-rapid-reset-ddos-attack/;  https://nvd.nist.gov/vuln/detail/CVE-2023-44487",
+      "cwes": [
+        "CWE-400"
+      ]
+    },
+    {
+      "cveID": "CVE-2022-0847",
+      "vendorProject": "Linux",
+      "product": "Kernel",
+      "vulnerabilityName": "Linux Kernel Privilege Escalation Vulnerability",
+      "dateAdded": "2022-04-25",
+      "shortDescription": "Linux kernel contains an improper initialization vulnerability where an unprivileged local user could escalate their privileges on the system. This vulnerability has the moniker of \"Dirty Pipe.\"",
+      "requiredAction": "Apply updates per vendor instructions.",
+      "dueDate": "2022-05-16",
+      "knownRansomwareCampaignUse": "Unknown",
+      "forensicTriage": "No",
+      "notes": "https://nvd.nist.gov/vuln/detail/CVE-2022-0847",
+      "cwes": [
+        "CWE-665"
+      ]
+    },
+    {
+      "cveID": "CVE-2021-44228",
+      "vendorProject": "Apache",
+      "product": "Log4j2",
+      "vulnerabilityName": "Apache Log4j2 Remote Code Execution Vulnerability",
+      "dateAdded": "2021-12-10",
+      "shortDescription": "Apache Log4j2 contains a vulnerability where JNDI features do not protect against attacker-controlled JNDI-related endpoints, allowing for remote code execution.",
+      "requiredAction": "For all affected software assets for which updates exist, the only acceptable remediation actions are: 1) Apply updates; OR 2) remove affected assets from agency networks. Temporary mitigations using one of the measures provided at https://www.cisa.gov/uscert/ed-22-02-apache-log4j-recommended-mitigation-measures are only acceptable until updates are available.",
+      "dueDate": "2021-12-24",
+      "knownRansomwareCampaignUse": "Known",
+      "forensicTriage": "No",
+      "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-44228",
+      "cwes": [
+        "CWE-20",
+        "CWE-400",
+        "CWE-502"
+      ]
+    },
+    {
+      "cveID": "CVE-2021-41773",
+      "vendorProject": "Apache",
+      "product": "HTTP Server",
+      "vulnerabilityName": "Apache HTTP Server Path Traversal Vulnerability",
+      "dateAdded": "2021-11-03",
+      "shortDescription": "Apache HTTP Server contains a path traversal vulnerability that allows an attacker to perform remote code execution if files outside directories configured by Alias-like directives are not under default �require all denied� or if CGI scripts are enabled. The original patch issued under this CVE ID is insufficient, please review remediation information under CVE-2021-42013.",
+      "requiredAction": "Apply updates per vendor instructions.",
+      "dueDate": "2021-11-17",
+      "knownRansomwareCampaignUse": "Known",
+      "forensicTriage": "No",
+      "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-41773",
+      "cwes": [
+        "CWE-22"
+      ]
+    }
+  ]
+}
