@@ -13,6 +13,11 @@ from typing import Any
 from vulnscan import NVD_DISCLAIMER
 from vulnscan.db import Database
 
+# FIRST EPSS CSV는 소수 다섯 자리로 배포된다. CLI와 HTML이 같은 자리수로 보이게 한다.
+EPSS_DECIMALS = 5
+# 설정 점검 조치 문장(한글 전각 포함)이 잘리지 않는 표시 폭. 그보다 긴 CVE 힌트만 줄인다.
+REMEDIATION_LIMIT = 96
+
 SEVERITY_KO = {
     "CRITICAL": "긴급",
     "HIGH": "높음",
@@ -89,14 +94,15 @@ def build_report(db: Database, scan_id: str | None, *, sample: bool) -> dict[str
         if item["kev"]:
             summary["kev"] += 1
     scan_sample = sample
-    scope = ""
     if selected not in {None, "all"}:
         scan = db.scan_row(str(selected))
+        scope_rows = [] if scan is None else [scan]
         if scan is not None:
             scan_sample = scan_sample or bool(scan["sample"])
-            scope = scan["scope"] or ""
-    elif selected == "all":
-        scan_sample = scan_sample or any(bool(row["sample"]) for row in db.scans())
+    else:
+        scope_rows = list(db.scans())
+        scan_sample = scan_sample or any(bool(row["sample"]) for row in scope_rows)
+    scope = _join_scopes(scope_rows)
     return {
         "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "scan_id": selected,
@@ -148,7 +154,7 @@ def render_csv(report: dict[str, Any]) -> str:
                 " ".join(item["cwe_ids"]),
                 " / ".join(name for name in item["cwe_names"] if name),
                 "예" if item["kev"] else "아니오",
-                "" if item["epss_score"] is None else f"{item['epss_score']:.5f}",
+                format_epss(item["epss_score"]),
                 item["risk_score"],
                 item["title"],
                 item["remediation"],
@@ -181,7 +187,6 @@ def render_table(report: dict[str, Any]) -> str:
         cwe = item["cwe_ids"][0] if item["cwe_ids"] else ""
         if item["cwe_names"] and item["cwe_names"][0]:
             cwe = f"{cwe} {item['cwe_names'][0]}"
-        epss = "" if item["epss_score"] is None else f"{item['epss_score']:.3f}"
         score = "" if item["cvss_score"] is None else f"{item['cvss_score']:.1f}"
         body.append(
             [
@@ -192,8 +197,8 @@ def render_table(report: dict[str, Any]) -> str:
                 item["cvss_severity_ko"] or item["cvss_severity"] or "",
                 _clip(cwe, 36),
                 "예" if item["kev"] else "",
-                epss,
-                _clip(item["remediation"], 42),
+                format_epss(item["epss_score"]),
+                _clip(item["remediation"], REMEDIATION_LIMIT),
             ]
         )
     widths = [_disp(header) for header in headers]
@@ -211,9 +216,19 @@ def render_table(report: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def format_epss(score: float | None) -> str:
+    if score is None:
+        return ""
+    return f"{float(score):.{EPSS_DECIMALS}f}"
+
+
+def _char_width(char: str) -> int:
+    """East Asian Wide/Fullwidth는 터미널 두 칸. Ambiguous(…)는 환경마다 달라 ASCII만 쓴다."""
+    return 2 if unicodedata.east_asian_width(char) in {"W", "F"} else 1
+
+
 def _disp(text: str) -> int:
-    """한글 등 전각 문자는 터미널에서 두 칸이다."""
-    return sum(2 if unicodedata.east_asian_width(char) in {"W", "F"} else 1 for char in text)
+    return sum(_char_width(char) for char in text)
 
 
 def _pad(text: str, width: int) -> str:
@@ -224,15 +239,29 @@ def _clip(text: str, limit: int) -> str:
     text = " ".join(str(text).split())
     if _disp(text) <= limit:
         return text
+    # U+2026은 East Asian Ambiguous라 한글 터미널에서 두 칸이 되어 다음 열이 밀린다.
+    ellipsis = "..."
+    budget = limit - _disp(ellipsis)
+    if budget < 1:
+        return ellipsis[: max(limit, 0)]
     kept: list[str] = []
     used = 0
     for char in text:
-        char_width = 2 if unicodedata.east_asian_width(char) in {"W", "F"} else 1
-        if used + char_width > limit - 1:
+        char_width = _char_width(char)
+        if used + char_width > budget:
             break
         kept.append(char)
         used += char_width
-    return "".join(kept) + "…"
+    return "".join(kept).rstrip() + ellipsis
+
+
+def _join_scopes(rows: list[Any]) -> str:
+    scopes: list[str] = []
+    for row in rows:
+        value = str(row["scope"] or "").strip()
+        if value and value not in scopes:
+            scopes.append(value)
+    return "; ".join(scopes)
 
 
 def render_html(report: dict[str, Any]) -> str:
@@ -254,7 +283,7 @@ def render_html(report: dict[str, Any]) -> str:
             cwe_bits.append(label)
         cwe_html = "<br>".join(cwe_bits)
         kev = '<span class="kev">KEV</span>' if item["kev"] else ""
-        epss = "" if item["epss_score"] is None else f"{item['epss_score']:.5f}"
+        epss = format_epss(item["epss_score"])
         score = "" if item["cvss_score"] is None else f"{item['cvss_score']:.1f}"
         version = html.escape(item["cvss_version"] or "")
         score_html = html.escape(score)
@@ -269,7 +298,7 @@ def render_html(report: dict[str, Any]) -> str:
             f"<div class='muted'>{html.escape(item['installed_version'])}</div></td>"
             f"<td>{html.escape(item['cve_id'] or '설정 점검')}</td>"
             f"<td>{score_html}</td>"
-            f"<td><span class='sev {html.escape(severity)}'>"
+            f"<td class='sevcol'><span class='sev {html.escape(severity)}'>"
             f"{html.escape(item['cvss_severity_ko'] or item['cvss_severity'] or '')}</span></td>"
             f"<td>{cwe_html}</td>"
             f"<td>{kev}</td>"
@@ -283,12 +312,13 @@ def render_html(report: dict[str, Any]) -> str:
         if not rows
         else (
             "<table><thead><tr>"
-            "<th>자산</th><th>구성요소</th><th>CVE</th><th>CVSS</th><th>심각도</th>"
+            "<th>자산</th><th>구성요소</th><th>CVE</th><th>CVSS</th><th class='sevcol'>심각도</th>"
             "<th>CWE</th><th>KEV</th><th>EPSS</th><th>내용과 조치</th>"
             "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
         )
     )
-    scope = html.escape(report.get("scope") or "")
+    raw_scope = str(report.get("scope") or "").strip()
+    scope_line = f'<p class="muted">범위: {html.escape(raw_scope)}</p>' if raw_scope else ""
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -310,7 +340,8 @@ main {{ max-width: 1180px; margin: 0 auto; padding: 24px; }}
 table {{ width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }}
 th, td {{ text-align: left; vertical-align: top; padding: 10px 12px;
   border-bottom: 1px solid #e6ebf1; font-size: 14px; }}
-th {{ background: #e8eef5; font-weight: 650; }}
+th {{ background: #e8eef5; font-weight: 650; white-space: nowrap; }}
+.sevcol {{ white-space: nowrap; min-width: 5em; width: 1%; }}
 .muted {{ color: #66788b; font-size: 12px; margin-top: 3px; }}
 .rem {{ margin-top: 6px; }}
 .sev {{ display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }}
@@ -331,7 +362,7 @@ footer {{ color: #5c6b7c; font-size: 12px; padding: 8px 0 28px; line-height: 1.5
 </header>
 <main>
   {sample}
-  <p class="muted">범위: {scope or "기록 없음"}</p>
+  {scope_line}
   <section class="cards">
     <div class="card"><b>{summary["total"]}</b><span>합계</span></div>
     <div class="card"><b>{summary["critical"]}</b><span>긴급</span></div>
