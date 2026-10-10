@@ -401,7 +401,7 @@ class Database:
         return self.conn.execute("SELECT * FROM scan WHERE scan_id = ?", (scan_id,)).fetchone()
 
     def scans(self) -> list[sqlite3.Row]:
-        return list(self.conn.execute("SELECT * FROM scan ORDER BY started_at, scan_id"))
+        return list(self.conn.execute("SELECT * FROM scan ORDER BY started_at, rowid"))
 
     def findings(self, scan_id: str | None) -> list[sqlite3.Row]:
         if scan_id is None or scan_id == "all":

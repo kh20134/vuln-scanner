@@ -180,7 +180,7 @@ vulnscan export --kind cve --format json --out cves.json
 
 ```text
 취약점 점검 결과
-생성 시각(UTC): 2026-10-10T03:16:13Z  스캔: all
+생성 시각(UTC): 2026-10-10T03:46:46Z  스캔: all
 합계 22  긴급 7  높음 12  중간 2  낮음 1  KEV 8  인벤토리 20
 표본 보고서입니다. 운영 환경의 실제 점검 결과가 아닙니다.
 ```
