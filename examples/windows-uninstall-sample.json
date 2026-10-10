@@ -1,0 +1,12 @@
+[
+  {
+    "DisplayName": "Apache Log4j 2",
+    "DisplayVersion": "2.14.1",
+    "Publisher": "Apache Software Foundation"
+  },
+  {
+    "DisplayName": "Google Chrome",
+    "DisplayVersion": "120.0.6099.71",
+    "Publisher": "Google LLC"
+  }
+]

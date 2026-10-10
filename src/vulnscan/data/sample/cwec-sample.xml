@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Excerpt from CWE version 4.20 (cwec_v4.20.xml, 2026-04-30).
+  Source: https://cwe.mitre.org/data/xml/cwec_latest.xml.zip
+  Copyright (c) The MITRE Corporation. CWE is a trademark of The MITRE Corporation.
+  CWE is free to use for research, development, and commercial purposes under the CWE Terms of Use:
+  https://cwe.mitre.org/about/termsofuse.html
+  Any copy is authorized on the condition that MITRE's copyright designation and that license are reproduced.
+  This file is a small offline sample (selected weaknesses only), not the full catalog.
+-->
+<Weakness_Catalog xmlns="http://cwe.mitre.org/cwe-7" Name="CWE" Version="4.20" Date="2026-04-30">
+  <Weaknesses>
+    <Weakness ID="20" Name="Improper Input Validation" Abstraction="Class" Status="Stable">
+      <Description>The product receives input or data, but it does not validate or incorrectly validates that the input has the properties that are required to process the data safely and correctly.</Description>
+    </Weakness>
+    <Weakness ID="22" Name="Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')" Abstraction="Base" Status="Stable">
+      <Description>The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.</Description>
+    </Weakness>
+    <Weakness ID="78" Name="Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')" Abstraction="Base" Status="Stable">
+      <Description>The product constructs all or part of an OS command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended OS command when it is sent to a downstream component.</Description>
+    </Weakness>
+    <Weakness ID="79" Name="Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')" Abstraction="Base" Status="Stable">
+      <Description>The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.</Description>
+    </Weakness>
+    <Weakness ID="89" Name="Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')" Abstraction="Base" Status="Stable">
+      <Description>The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component. Without sufficient removal or quoting of SQL syntax in user-controllable inputs, the generated SQL query can cause those inputs to be interpreted as SQL instead of ordinary user data.</Description>
+    </Weakness>
+    <Weakness ID="94" Name="Improper Control of Generation of Code ('Code Injection')" Abstraction="Base" Status="Draft">
+      <Description>The product constructs all or part of a code segment using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the syntax or behavior of the intended code segment.</Description>
+    </Weakness>
+    <Weakness ID="122" Name="Heap-based Buffer Overflow" Abstraction="Variant" Status="Draft">
+      <Description>A heap overflow condition is a buffer overflow, where the buffer that can be overwritten is allocated in the heap portion of memory, generally meaning that the buffer was allocated using a routine such as malloc().</Description>
+    </Weakness>
+    <Weakness ID="193" Name="Off-by-one Error" Abstraction="Base" Status="Draft">
+      <Description>A product calculates or uses an incorrect maximum or minimum value that is 1 more, or 1 less, than the correct value.</Description>
+    </Weakness>
+    <Weakness ID="200" Name="Exposure of Sensitive Information to an Unauthorized Actor" Abstraction="Class" Status="Draft">
+      <Description>The product exposes sensitive information to an actor that is not explicitly authorized to have access to that information.</Description>
+    </Weakness>
+    <Weakness ID="250" Name="Execution with Unnecessary Privileges" Abstraction="Base" Status="Draft">
+      <Description>The product performs an operation at a privilege level that is higher than the minimum level required, which creates new weaknesses or amplifies the consequences of other weaknesses.</Description>
+    </Weakness>
+    <Weakness ID="269" Name="Improper Privilege Management" Abstraction="Class" Status="Draft">
+      <Description>The product does not properly assign, modify, track, or check privileges for an actor, creating an unintended sphere of control for that actor.</Description>
+    </Weakness>
+    <Weakness ID="276" Name="Incorrect Default Permissions" Abstraction="Base" Status="Draft">
+      <Description>During installation, installed file permissions are set to allow anyone to modify those files.</Description>
+    </Weakness>
+    <Weakness ID="284" Name="Improper Access Control" Abstraction="Pillar" Status="Incomplete">
+      <Description>The product does not restrict or incorrectly restricts access to a resource from an unauthorized actor.</Description>
+    </Weakness>
+    <Weakness ID="287" Name="Improper Authentication" Abstraction="Class" Status="Draft">
+      <Description>When an actor claims to have a given identity, the product does not prove or insufficiently proves that the claim is correct.</Description>
+    </Weakness>
+    <Weakness ID="295" Name="Improper Certificate Validation" Abstraction="Base" Status="Draft">
+      <Description>The product does not validate, or incorrectly validates, a certificate.</Description>
+    </Weakness>
+    <Weakness ID="307" Name="Improper Restriction of Excessive Authentication Attempts" Abstraction="Base" Status="Draft">
+      <Description>The product does not implement sufficient measures to prevent multiple failed authentication attempts within a short time frame.</Description>
+    </Weakness>
+    <Weakness ID="327" Name="Use of a Broken or Risky Cryptographic Algorithm" Abstraction="Class" Status="Draft">
+      <Description>The product uses a broken or risky cryptographic algorithm or protocol.</Description>
+    </Weakness>
+    <Weakness ID="330" Name="Use of Insufficiently Random Values" Abstraction="Class" Status="Stable">
+      <Description>The product uses insufficiently random numbers or values in a security context that depends on unpredictable numbers.</Description>
+    </Weakness>
+    <Weakness ID="362" Name="Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition')" Abstraction="Class" Status="Draft">
+      <Description>The product contains a concurrent code sequence that requires temporary, exclusive access to a shared resource, but a timing window exists in which the shared resource can be modified by another code sequence operating concurrently.</Description>
+    </Weakness>
+    <Weakness ID="364" Name="Signal Handler Race Condition" Abstraction="Base" Status="Incomplete">
+      <Description>The product uses a signal handler that introduces a race condition.</Description>
+    </Weakness>
+    <Weakness ID="400" Name="Uncontrolled Resource Consumption" Abstraction="Class" Status="Draft">
+      <Description>The product does not properly control the allocation and maintenance of a limited resource.</Description>
+    </Weakness>
+    <Weakness ID="416" Name="Use After Free" Abstraction="Variant" Status="Stable">
+      <Description>The product reuses or references memory after it has been freed. At some point afterward, the memory may be allocated again and saved in another pointer, while the original pointer references a location somewhere within the new allocation. Any operations using the original pointer are no longer valid because the memory &quot;belongs&quot; to the code that operates on the new pointer.</Description>
+    </Weakness>
+    <Weakness ID="502" Name="Deserialization of Untrusted Data" Abstraction="Base" Status="Draft">
+      <Description>The product deserializes untrusted data without sufficiently ensuring that the resulting data will be valid.</Description>
+    </Weakness>
+    <Weakness ID="506" Name="Embedded Malicious Code" Abstraction="Class" Status="Incomplete">
+      <Description>The product contains code that appears to be malicious in nature.</Description>
+    </Weakness>
+    <Weakness ID="521" Name="Weak Password Requirements" Abstraction="Base" Status="Draft">
+      <Description>The product does not require that users should have strong passwords.</Description>
+    </Weakness>
+    <Weakness ID="665" Name="Improper Initialization" Abstraction="Class" Status="Draft">
+      <Description>The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.</Description>
+    </Weakness>
+    <Weakness ID="693" Name="Protection Mechanism Failure" Abstraction="Pillar" Status="Draft">
+      <Description>The product does not use or incorrectly uses a protection mechanism that provides sufficient defense against directed attacks against the product.</Description>
+    </Weakness>
+    <Weakness ID="732" Name="Incorrect Permission Assignment for Critical Resource" Abstraction="Class" Status="Draft">
+      <Description>The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.</Description>
+    </Weakness>
+    <Weakness ID="787" Name="Out-of-bounds Write" Abstraction="Base" Status="Draft">
+      <Description>The product writes data past the end, or before the beginning, of the intended buffer.</Description>
+    </Weakness>
+    <Weakness ID="798" Name="Use of Hard-coded Credentials" Abstraction="Base" Status="Draft">
+      <Description>The product contains hard-coded credentials, such as a password or cryptographic key.</Description>
+    </Weakness>
+    <Weakness ID="917" Name="Improper Neutralization of Special Elements used in an Expression Language Statement ('Expression Language Injection')" Abstraction="Base" Status="Incomplete">
+      <Description>The product constructs all or part of an expression language (EL) statement in a framework such as a Java Server Page (JSP) using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended EL statement before it is executed.</Description>
+    </Weakness>
+    <Weakness ID="1188" Name="Initialization of a Resource with an Insecure Default" Abstraction="Base" Status="Incomplete">
+      <Description>The product initializes or sets a resource with a default that is intended to be changed by the product's installer, administrator, or maintainer, but the default is not secure.</Description>
+    </Weakness>
+    <Weakness ID="428" Name="Unquoted Search Path or Element" Abstraction="Base" Status="Draft">
+      <Description>The product uses a search path that contains an unquoted element, in which the element contains whitespace or other separators. This can cause the product to access resources in a parent path.</Description>
+    </Weakness>
+    <Weakness ID="835" Name="Loop with Unreachable Exit Condition ('Infinite Loop')" Abstraction="Base" Status="Incomplete">
+      <Description>The product contains an iteration or loop with an exit condition that cannot be reached, i.e., an infinite loop.</Description>
+    </Weakness>
+  </Weaknesses>
+</Weakness_Catalog>

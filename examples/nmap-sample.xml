@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<!-- 표본 nmap XML. 문서용 TEST-NET 주소이며 실제 스캔 결과가 아니다. -->
+<nmaprun scanner="nmap" args="nmap -sV -p 22,80,8080,23 203.0.113.10" start="1710000000" version="7.94">
+  <host>
+    <status state="up" reason="echo-reply"/>
+    <address addr="203.0.113.10" addrtype="ipv4"/>
+    <ports>
+      <port protocol="tcp" portid="22">
+        <state state="open" reason="syn-ack"/>
+        <service name="ssh" product="OpenSSH" version="8.9p1" extrainfo="Ubuntu Linux; protocol 2.0" method="probed" conf="10"/>
+      </port>
+      <port protocol="tcp" portid="80">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="nginx" version="1.18.0" method="probed" conf="10"/>
+      </port>
+      <port protocol="tcp" portid="8080">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="Apache httpd" version="2.4.49" extrainfo="(Unix)" method="probed" conf="10"/>
+      </port>
+      <port protocol="tcp" portid="23">
+        <state state="closed" reason="conn-refused"/>
+        <service name="telnet"/>
+      </port>
+    </ports>
+  </host>
+</nmaprun>
