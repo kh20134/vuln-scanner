@@ -23,6 +23,10 @@ This product uses data from the NVD API but is not endorsed or certified by the 
 
 ## 구조도
 
+![vulnscan 구조도: 공식 피드(외부), 로컬 호스트의 수집·SQLite·대조·보고서, 인가 대상 네트워크](docs/architecture.png)
+
+점선 상자는 신뢰 경계입니다. 벡터 원본은 [docs/architecture.svg](docs/architecture.svg)이며 글자를 윤곽선으로 바꿔 두었습니다. 아래는 같은 흐름의 Mermaid 요약입니다.
+
 ```mermaid
 flowchart LR
   subgraph feeds [공식 피드]
